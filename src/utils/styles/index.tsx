@@ -53,7 +53,7 @@ export const ConversationSidebarItem = styled.div.attrs({
         gap-4
         grid
         grid-cols-[20%_80%]
-        px-[24px]
+        px-[16px]
         py-[10px]
         border-b-2
         border-[#545454de]

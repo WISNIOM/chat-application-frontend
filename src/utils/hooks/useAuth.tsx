@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { getAuthUser } from '../api';
 
-export function useAuth() {
+export const useAuth = () => {
     const [loading, setLoading] = useState(true);
     const { user, updateAuthUser } = useContext(AuthContext);
     const controller = new AbortController();
@@ -12,12 +12,11 @@ export function useAuth() {
             .then(({ data }) => {
                 console.log(data);
                 updateAuthUser(data);
-                setTimeout(() => setLoading(false), 1000);
             })
             .catch((err) => {
                 console.log(err);
-                setTimeout(() => setLoading(false), 1000)
-            });
+            })
+            .finally(() => setLoading(false));
 
         return () => {
             controller.abort();
@@ -25,4 +24,4 @@ export function useAuth() {
     }, []);
 
     return { user, loading };
-}
+};
