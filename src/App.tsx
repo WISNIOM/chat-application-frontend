@@ -1,25 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { AuthenticatedRoute } from './components/AuthenticatedRoute';
+import ConversationChannelPage from './pages/conversations/ConversationChannelPage';
+import ConversationPage from './pages/conversations/ConversationPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import { AuthContext } from './utils/context/AuthContext';
+import { User } from './utils/types';
 
 function App() {
+  const [user, setUser] = useState<User>();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <AuthContext.Provider value={{ user, updateAuthUser: setUser }}>
+      <Routes>
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="conversations"
+          element={
+            <AuthenticatedRoute>
+              <ConversationPage />
+            </AuthenticatedRoute>
+          }
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Route path=":id" element={<ConversationChannelPage />} />
+        </Route>
+      </Routes>
+    </AuthContext.Provider>
   );
 }
 
